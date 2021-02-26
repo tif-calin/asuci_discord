@@ -72,7 +72,6 @@ def get_bill_full(bill):
      - date_voted       (str, see above)
      - vote_required    (str)
      - content          (str)
-    not implemented
      - references       (str)
     '''
     bill = None
@@ -87,7 +86,29 @@ def get_bill_full(bill):
 
             bill['authors'] = divparsS[1].text.replace(',', '').split()
             bill['seconds'] = divparsS[2].text.replace(',', '').split()
-            bill['date_presented'] = str_date(divpars[3].text.strip(), return_str = True)
+            bill['date_presented'] = str2date(divpars[3].text.strip(), return_str = True)
+
+            dv = divpars[-2].text.strip()
+            bill['date_voted'] = dv if dv else None
+            vr = divpars[-6].text.strip()
+            bill['vote_required'] = vr if vr else None
+
+            divtxt = div.text.strip()
+            first_p = None
+
+            for p in divparsP:
+                if p.text.strip():
+                    first_p = p.text.strip()
+                    break
+
+            ind_fp = divtxt.index(first_p)
+            ind_rf = divtxt.rfind('References:')
+            ind_vr = divtxt.rfind('Vote Required:')
+            if 'References:' in divtxt:
+                bill['content'] = divtxt[ind_fp:ind_rf].strip()
+                bill['references'] = divtxt[ind_rf:ind_vr].strip()
+            else:
+                bill['content'] = divtxt[ind_fp:ind_vr].strip()
 
             return bill
 

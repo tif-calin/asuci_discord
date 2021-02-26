@@ -27,7 +27,7 @@ def get_by_kv(lst, key, val):
     for d in lst:
         if d.get(key) == val: return d
 
-def str_date(s, return_str = False):
+def str2date(s, return_str = False):
     '''
     takes a string like "November 3, 2020", returns a datetime.datetime by default or str like "2020-11-03"
     '''
