@@ -36,7 +36,7 @@ def get_soup(url, by, elem):
 
     return soup
 
-def get_bill_basic(tr):
+def bill_info_basic(tr):
     ''' 
     takes in a table row html element (beautiful soup object) and constructs basic bill
     properties:
@@ -65,7 +65,7 @@ def get_bill_basic(tr):
 
     return bill
 
-def get_bill_full(bill):
+def bill_info_full(bill):
     '''
     takes a basic bill object and get this add'nl info:
      - authors          (lst_str)
@@ -126,11 +126,41 @@ def get_all_bills(url = uBILLS):
     pars = soup.find('tbody').find_all('tr')
 
     for tr in pars:
-        bill = get_bill_basic(tr)
-        bill = get_bill_full(bill)
+        bill = bill_info_basic(tr)
+        bill = bill_info_full(bill)
 
         bills.append(bill)
     
     utils.save_json(bills, pBILLS)
 
     return bills
+
+def get_new_bills(url = uBILLS):
+
+    bills = utils.load_json(pBILLS, [])
+    delta = [] # list of bill IDs for bills that were modified or new
+
+    soup = get_soup(url = url, by = By.TAG_NAME, elem = 'table')
+
+    pars = soup.find('tbody').find_all('tr')
+
+    for tr in pars:
+        bill = bill_info_basic(tr)
+
+        bill_id = bill.get('id')   
+
+        if not bill_id in [b.get('id') for b in bills]:
+            print(f'New bill!: {bill.get("id")}')
+            delta.append(bill.get('id'))
+            bills.append(bill_info_full(bill))
+        else:
+            old_bill = get_by_kv(bills, 'id', bill.get('id'))
+
+            if bill.get('status') != old_bill.get('status'):
+                print(f'Bill diff: {bill.get("id")}')
+                delta.append(bill.get('id'))
+                bills[bills.index(old_bill)] = bill_info_full(bill)
+            else:
+                print(f'Same shit: {bill.get("id")}')
+
+    return bills, delta
