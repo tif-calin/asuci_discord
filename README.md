@@ -15,4 +15,14 @@ A discord bot to send updates when an ASUCI (the student senate of UCI) bill is 
  - Beautiful Soup 4: for web scraping page sources
  - Discord.py: for running the discord bot
 
+### Repo
+ - `asuciasuci.py` is the main program
+ - `utils.py` contains a few helper functions for `asuciasuci.py`
+ - `discord_bot.py` runs the bot and calls functions from `asuciasuci.py`
+ - `.env` should be filled out with the private bot token as such: 
+```
+# .env
+DISCORD_TOKEN=<insert token here w no angle brackets>
+```
+
 ## To-do

@@ -122,7 +122,6 @@ def get_all_bills(url = uBILLS):
     bills = []
 
     soup = get_soup(url = url, by = By.TAG_NAME, elem = 'table')
-
     pars = soup.find('tbody').find_all('tr')
 
     for tr in pars:
@@ -132,16 +131,17 @@ def get_all_bills(url = uBILLS):
         bills.append(bill)
     
     utils.save_json(bills, pBILLS)
-
     return bills
 
 def get_new_bills(url = uBILLS):
-
+    '''
+    checks if new bill or change in status
+    returns bills and list of bill IDs for new/modified bills
+    '''
     bills = utils.load_json(pBILLS, [])
     delta = [] # list of bill IDs for bills that were modified or new
 
     soup = get_soup(url = url, by = By.TAG_NAME, elem = 'table')
-
     pars = soup.find('tbody').find_all('tr')
 
     for tr in pars:
@@ -163,4 +163,5 @@ def get_new_bills(url = uBILLS):
             else:
                 print(f'Same shit: {bill.get("id")}')
 
+    utils.save_json(bills, pBILLS)
     return bills, delta
