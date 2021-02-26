@@ -5,6 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.options import Options
 
+import utils
+
 ## PATHS & URLS ##
 pGECKO = './geckodriver.exe'
 pBILLS = './bills.json'
@@ -128,3 +130,7 @@ def get_all_bills(url = uBILLS):
         bill = get_bill_full(bill)
 
         bills.append(bill)
+    
+    utils.save_json(bills, pBILLS)
+
+    return bills
