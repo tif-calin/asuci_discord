@@ -165,3 +165,42 @@ def get_new_bills(url = uBILLS):
 
     utils.save_json(bills, pBILLS)
     return bills, delta
+
+### DISCORD FORMATTING ###
+def make_embed(bill):
+    auth_n = len(bill.get('authors'))
+    auth_n = f" ({auth_n})" if auth_n > 4 else ''
+    scnd_n = len(bill.get('seconds'))
+    scnd_n = f" ({scnd_n})" if scnd_n > 4 else ''
+    outcom = f"{bill.get('vote_yea')}-{bill.get('vote_abs')}-{bill.get('vote_nay')}"
+    authrs = ', '.join('authors'))
+    scndrs = ', '.join('seconds'))
+    status = bill.get('status').strip()
+
+    if not status:
+        status = 'Presented'
+        title = f"New bill presented: {bill.get('id')}"
+    elif 'overturn' in status.lower():
+        status = 'Overturned'
+        title = f"Bill overturned: {bill.get('id')}"
+    elif 'postpone' in status.lower():
+        status = 'Postponed'
+        title = f"Bill postponed: {bill.get('id')}"
+    elif 'passed' in status.lower():
+        title = f"Bill passed: {bill.get('id')}"
+    elif 'failed' in status.lower():
+        title = f"Bill failed: {bill.get('id')}"
+    
+    embd = discord.Embed(
+        title = title,
+        url = str(bill.get('url')),
+        description = str(bill.get('synopsis'))
+    )
+
+    embd.set_footer(text = 'Bill ' + status)
+    embd.add_field(name='Authored by' + auth_n, inline=False, value=authrs)
+    embd.add_field(name='Seconded by' + scnd_n, inline=False, value=scndrs)
+    embd.add_field(name='Vote type', inline=True, value=bill.get('vote_required'))
+    embd.add_field(name='Vote outcome', inline=True, value=outcom)
+
+    return embd

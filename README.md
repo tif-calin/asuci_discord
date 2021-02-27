@@ -1,4 +1,4 @@
-# asuci_discord
+# asuciasuci
 A discord bot to send updates when an ASUCI (the student senate of UCI) bill is voted on, presented, or overturned to a Discord community
 
 ## Functionality
