@@ -1,5 +1,6 @@
 ## IMPORTS ##
 from bs4 import BeautifulSoup as bs
+from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -173,8 +174,8 @@ def make_embed(bill):
     scnd_n = len(bill.get('seconds'))
     scnd_n = f" ({scnd_n})" if scnd_n > 4 else ''
     outcom = f"{bill.get('vote_yea')}-{bill.get('vote_abs')}-{bill.get('vote_nay')}"
-    authrs = ', '.join('authors'))
-    scndrs = ', '.join('seconds'))
+    authrs = ', '.join('authors')
+    scndrs = ', '.join('seconds')
     status = bill.get('status').strip()
 
     if not status:
