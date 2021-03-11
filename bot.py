@@ -14,6 +14,8 @@ import os
 import asyncio
 from dotenv import load_dotenv
 import discord
+from discord.ext import commands, tasks
+import datetime as dt
 
 import asuciasuci as asuci
 
@@ -36,7 +38,8 @@ async def on_message(mssg):
                 if bill.get('id') == ID:
                     embd = asuci.bill_template(bill)
                     await mssg.channel.send(embed = embd)
-                      
+
+@tasks.loop(hours=1.5708)                     
 async def background_task():
     pass
 

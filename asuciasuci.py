@@ -9,8 +9,8 @@ from selenium.webdriver.firefox.options import Options
 import utils
 
 ## PATHS & URLS ##
-pGECKO = './geckodriver.exe'
-pBILLS = './bills.json'
+pGECKO = r'./geckodriver'
+pBILLS = r'./bills.json'
 uBILLS = 'https://www.asuci.uci.edu/senate/legislation/'
 
 ## HELPER FUNCTIONS ##
@@ -24,7 +24,7 @@ def get_soup(url, by, elem):
     opts = Options()
     opts.add_argument('--headless')
     opts.add_argument('--disable-gpu')
-    driver = webdriver.FireFox(executable_path = pGECKO, options = opts)
+    driver = webdriver.Firefox(executable_path = pGECKO, options = opts)
     driver.get(url)
 
     try:
@@ -205,3 +205,5 @@ def make_embed(bill):
     embd.add_field(name='Vote outcome', inline=True, value=outcom)
 
     return embd
+
+get_all_bills()
